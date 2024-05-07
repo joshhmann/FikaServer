@@ -1,0 +1,13 @@
+services:
+  fika:
+    build: .
+    container_name: fika
+    hostname: fika
+    restart: unless-stopped
+    working_dir: /fika
+    command: ["/bin/bash", "/fika/fcpy.sh"]
+    ports:
+      - "6969:6969"
+      - "6970:6970"
+      - "6971:6971"
+
