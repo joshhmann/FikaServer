@@ -1,6 +1,9 @@
 services:
   fika:
-    build: .
+    build: 
+      context: .
+      args:
+        FIKA_TAG: v0.9.8892.36315
     container_name: fika
     hostname: fika
     restart: unless-stopped

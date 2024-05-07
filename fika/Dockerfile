@@ -10,8 +10,7 @@ FROM ubuntu:latest AS builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Set build arguments
-ARG FIKA=HEAD^
-ARG FIKA_BRANCH=v0.9.8892.36315
+ARG FIKA_TAG=v0.9.8892.36315
 ARG SPT=HEAD^
 ARG SPT_BRANCH=3.8.1
 ARG NODE=20.11.1
@@ -56,11 +55,11 @@ RUN . $HOME/.nvm/nvm.sh && \
 # Move the built server to a separate directory to clean up the source
 RUN if [ -d "build/" ]; then mv build/ /fika/build; else echo "Build directory not found"; fi
 
-# Grab FIKA Server Mod or continue if it exist
-RUN git clone --branch $FIKA_BRANCH https://github.com/project-fika/Fika-Server.git /fika/server/user/mods/fika-server && \
-    \. $HOME/.nvm/nvm.sh && \
+# Clone and setup the FIKA Server Mod using the build argument for the tag
+RUN git clone https://github.com/project-fika/Fika-Server.git /fika/server/user/mods/fika-server
+RUN . $HOME/.nvm/nvm.sh && \
     cd /fika/server/user/mods/fika-server && \
-    git checkout $FIKA && \
+    git checkout tags/${FIKA_TAG} && \
     npm install && \
     rm -rf /fika/server/user/mods/fika-server/.git
 
